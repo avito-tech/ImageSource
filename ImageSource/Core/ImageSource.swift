@@ -19,8 +19,17 @@ public protocol ImageSource: class {
     
     func cancelRequest(_: ImageRequestId)
     
+    /*
+     TODO: change `completion` parameter to enum, one case of which must indicate that there's no intrinsic size.
+     Maybe rename it to `fullSize`.
+     */
     func imageSize(completion: @escaping (CGSize?) -> ())
     
+    /*
+     TODO: change `completion` parameter to enum, one case of which must indicate that there's no such notion
+     as full resolution for the given image source.
+     Maybe rename it to `fullSizeImageData`
+     */
     func fullResolutionImageData(completion: @escaping (Data?) -> ())
 
     func isEqualTo(_ other: ImageSource) -> Bool
