@@ -3,36 +3,16 @@ import Photos
 
 final class ImageProvider {
     
-    private let dogApiClient = DogApiClient()
-    private let fileManager = FileManager.default
-    
     /**
      This method is asynchronous because iOS can prompt user to allow access to photo library
      */
     func images(completion: @escaping ([ImageSource]) -> ()) {
         
-        var images = [ImageSource]()
-        let dispatchGroup = DispatchGroup()
+        var images = remoteDogImages()
+        images.append(contentsOf: localDogImages())
         
-        dispatchGroup.enter()
         photosFromCameraRoll { photos in
             images.append(contentsOf: photos)
-            dispatchGroup.leave()
-        }
-        
-        dispatchGroup.enter()
-        randomRemoteDogImages { remoteImages in
-            images.append(contentsOf: remoteImages)
-            dispatchGroup.leave()
-        }
-        
-        dispatchGroup.enter()
-        localDogImages { localImages in
-            images.append(contentsOf: localImages)
-            dispatchGroup.leave()
-        }
-        
-        dispatchGroup.notify(queue: .main) {
             completion(images)
         }
     }
@@ -90,71 +70,67 @@ final class ImageProvider {
     }
     
     // MARK: - Getting remote images
-    private func randomRemoteDogImages(completion: @escaping ([ImageSource]) -> ()) {
-        dogApiClient.randomDogs { dogs in
-            completion(dogs.map { RemoteImageSource(url: $0.url) })
-        }
+    private func remoteDogImages() -> [ImageSource] {
+        let urlStrings = [
+            "https://images.dog.ceo/breeds/husky/n02110185_12656.jpg",
+            "https://images.dog.ceo/breeds/kelpie/n02105412_3979.jpg",
+            "https://images.dog.ceo/breeds/terrier-bedlington/n02093647_1514.jpg",
+            "https://images.dog.ceo/breeds/bluetick/n02088632_1145.jpg",
+            "https://images.dog.ceo/breeds/papillon/n02086910_5396.jpg",
+            "https://images.dog.ceo/breeds/spaniel-cocker/n02102318_10178.jpg",
+            "https://images.dog.ceo/breeds/deerhound-scottish/n02092002_6180.jpg",
+            "https://images.dog.ceo/breeds/malinois/n02105162_2836.jpg",
+            "https://images.dog.ceo/breeds/cairn/n02096177_1766.jpg",
+            "https://images.dog.ceo/breeds/shihtzu/n02086240_6992.jpg",
+            "https://images.dog.ceo/breeds/redbone/n02090379_4708.jpg",
+            "https://images.dog.ceo/breeds/pomeranian/n02112018_12750.jpg",
+            "https://images.dog.ceo/breeds/collie-border/n02106166_1842.jpg",
+            "https://images.dog.ceo/breeds/cotondetulear/IMAG1063.jpeg",
+            "https://images.dog.ceo/breeds/akita/Akita_Inu_dog.jpg",
+            "https://images.dog.ceo/breeds/spaniel-irish/n02102973_634.jpg",
+            "https://images.dog.ceo/breeds/bullterrier-staffordshire/n02093256_6077.jpg",
+            "https://images.dog.ceo/breeds/kuvasz/n02104029_1816.jpg",
+            "https://images.dog.ceo/breeds/lhasa/n02098413_2582.jpg",
+            "https://images.dog.ceo/breeds/kuvasz/n02104029_3397.jpg",
+            "https://images.dog.ceo/breeds/stbernard/n02109525_16284.jpg",
+            "https://images.dog.ceo/breeds/eskimo/n02109961_6119.jpg",
+            "https://images.dog.ceo/breeds/chow/n02112137_5022.jpg",
+            "https://images.dog.ceo/breeds/cotondetulear/IMAG1063.jpeg",
+            "https://images.dog.ceo/breeds/kelpie/n02105412_3084.jpg",
+            "https://images.dog.ceo/breeds/dane-great/n02109047_21903.jpg",
+            "https://images.dog.ceo/breeds/boxer/n02108089_9076.jpg",
+            "https://images.dog.ceo/breeds/pointer-german/n02100236_5671.jpg",
+            "https://images.dog.ceo/breeds/boxer/n02108089_1571.jpg",
+            "https://images.dog.ceo/breeds/airedale/n02096051_1558.jpg",
+            "https://images.dog.ceo/breeds/doberman/n02107142_11226.jpg",
+            "https://images.dog.ceo/breeds/deerhound-scottish/n02092002_6625.jpg",
+            "https://images.dog.ceo/breeds/bulldog-boston/n02096585_1449.jpg",
+            "https://images.dog.ceo/breeds/deerhound-scottish/n02092002_14825.jpg",
+            "https://images.dog.ceo/breeds/keeshond/n02112350_9717.jpg",
+            "https://images.dog.ceo/breeds/pekinese/n02086079_2935.jpg",
+            "https://images.dog.ceo/breeds/borzoi/n02090622_7602.jpg",
+            "https://images.dog.ceo/breeds/germanshepherd/n02106662_19801.jpg",
+            "https://images.dog.ceo/breeds/husky/n02110185_14056.jpg",
+            "https://images.dog.ceo/breeds/pointer-german/n02100236_3686.jpg",
+            "https://images.dog.ceo/breeds/malamute/n02110063_13541.jpg",
+            "https://images.dog.ceo/breeds/keeshond/n02112350_8628.jpg",
+            "https://images.dog.ceo/breeds/sheepdog-shetland/n02105855_12801.jpg",
+            "https://images.dog.ceo/breeds/papillon/n02086910_5399.jpg",
+            "https://images.dog.ceo/breeds/retriever-golden/n02099601_8429.jpg",
+            "https://images.dog.ceo/breeds/bullterrier-staffordshire/n02093256_3994.jpg",
+            "https://images.dog.ceo/breeds/dingo/n02115641_10021.jpg",
+            "https://images.dog.ceo/breeds/papillon/n02086910_7456.jpg",
+            "https://images.dog.ceo/breeds/husky/n02110185_1289.jpg"
+        ]
+        
+        return urlStrings
+            .compactMap { URL(string: $0) }
+            .map { RemoteImageSource(url: $0) }
     }
     
     // MARK: - Getting local images
-    private func localDogImages(completion: @escaping ([ImageSource]) -> ()) {
-        guard let localImagesPath = self.localImagesPath() else {
-            return completion([])
-        }
-        
-        let localImagesUrl = URL(fileURLWithPath: localImagesPath)
-        
-        if let files = try? fileManager.contentsOfDirectory(atPath: localImagesPath), files.count > 0 {
-            completion(files.map { LocalImageSource(path: localImagesUrl.appendingPathComponent($0).path) })
-        } else { // Directory doesn't exist
-            do {
-                try fileManager.createDirectory(
-                    atPath: localImagesPath,
-                    withIntermediateDirectories: true,
-                    attributes: nil
-                )
-                
-                let dispatchGroup = DispatchGroup()
-                dispatchGroup.enter()
-                
-                dogApiClient.randomDogs { [fileManager] dogs in
-                    dogs.forEach { dog in
-                        dispatchGroup.enter()
-                        
-                        let downloadTask = URLSession.shared.downloadTask(with: dog.url) { url, _, _ in
-                            if let url = url {
-                                try? fileManager.moveItem(
-                                    at: url,
-                                    to: localImagesUrl.appendingPathComponent(url.lastPathComponent)
-                                )
-                            }
-                            
-                            dispatchGroup.leave()
-                        }
-                        
-                        downloadTask.resume()
-                    }
-                    
-                    dispatchGroup.leave()
-                }
-                
-                dispatchGroup.notify(queue: .main) { [fileManager] in
-                    let files = (try? fileManager.contentsOfDirectory(atPath: localImagesPath)) ?? []
-                    completion(files.map { LocalImageSource(path: localImagesUrl.appendingPathComponent($0).path) })
-                }
-            } catch {
-                print(error)
-                completion([])
-            }
-        }
-    }
-    
-    private func localImagesPath() -> String? {
-        if let url = fileManager.urls(for: .downloadsDirectory, in: .userDomainMask).first {
-            return url.appendingPathComponent("LocalImages").path
-        } else {
-            assertionFailure("Can't find user's Downloads directory. That's weird.")
-            return nil
-        }
+    private func localDogImages() -> [ImageSource] {
+        let imageUrls = Bundle.main.urls(forResourcesWithExtension: nil, subdirectory: "Images") ?? []
+        return imageUrls.map { LocalImageSource(path: $0.path) }
     }
 }

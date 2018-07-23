@@ -7,20 +7,17 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		25BA57C021060587004987A1 /* DogApiClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25BA57BF21060587004987A1 /* DogApiClient.swift */; };
-		25BA57C421061A9D004987A1 /* Dog.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25BA57C321061A9D004987A1 /* Dog.swift */; };
 		25CAA64C210100FA00D17180 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25CAA64B210100FA00D17180 /* AppDelegate.swift */; };
 		25CAA64E210100FA00D17180 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25CAA64D210100FA00D17180 /* ViewController.swift */; };
 		25CAA651210100FA00D17180 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 25CAA64F210100FA00D17180 /* Main.storyboard */; };
 		25CAA653210100FB00D17180 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 25CAA652210100FB00D17180 /* Assets.xcassets */; };
 		25CAA656210100FB00D17180 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 25CAA654210100FB00D17180 /* LaunchScreen.storyboard */; };
 		3DF0083007ACA60D49340F37 /* Pods_CocoapodsExample.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9AD88081D37DE4D5A4C31212 /* Pods_CocoapodsExample.framework */; };
+		F2604B87210663EA00159355 /* Images in Resources */ = {isa = PBXBuildFile; fileRef = F2604B86210663EA00159355 /* Images */; };
 		F2C5206E21011E4A008EBDE5 /* ImageProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2C5206D21011E4A008EBDE5 /* ImageProvider.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		25BA57BF21060587004987A1 /* DogApiClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DogApiClient.swift; sourceTree = "<group>"; };
-		25BA57C321061A9D004987A1 /* Dog.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Dog.swift; sourceTree = "<group>"; };
 		25CAA648210100FA00D17180 /* CocoapodsExample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CocoapodsExample.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		25CAA64B210100FA00D17180 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		25CAA64D210100FA00D17180 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -31,6 +28,7 @@
 		373AB86FCAF7FF69AF622FF4 /* Pods-CocoapodsExample.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CocoapodsExample.release.xcconfig"; path = "Pods/Target Support Files/Pods-CocoapodsExample/Pods-CocoapodsExample.release.xcconfig"; sourceTree = "<group>"; };
 		9AD88081D37DE4D5A4C31212 /* Pods_CocoapodsExample.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_CocoapodsExample.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		E21AB8489642C4C1722AF398 /* Pods-CocoapodsExample.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CocoapodsExample.debug.xcconfig"; path = "Pods/Target Support Files/Pods-CocoapodsExample/Pods-CocoapodsExample.debug.xcconfig"; sourceTree = "<group>"; };
+		F2604B86210663EA00159355 /* Images */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Images; sourceTree = "<group>"; };
 		F2C5206D21011E4A008EBDE5 /* ImageProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageProvider.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -67,11 +65,10 @@
 		25CAA64A210100FA00D17180 /* CocoapodsExample */ = {
 			isa = PBXGroup;
 			children = (
+				F2604B86210663EA00159355 /* Images */,
 				25CAA64B210100FA00D17180 /* AppDelegate.swift */,
 				25CAA64D210100FA00D17180 /* ViewController.swift */,
 				F2C5206D21011E4A008EBDE5 /* ImageProvider.swift */,
-				25BA57BF21060587004987A1 /* DogApiClient.swift */,
-				25BA57C321061A9D004987A1 /* Dog.swift */,
 				25CAA64F210100FA00D17180 /* Main.storyboard */,
 				25CAA652210100FB00D17180 /* Assets.xcassets */,
 				25CAA654210100FB00D17180 /* LaunchScreen.storyboard */,
@@ -157,6 +154,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F2604B87210663EA00159355 /* Images in Resources */,
 				25CAA656210100FB00D17180 /* LaunchScreen.storyboard in Resources */,
 				25CAA653210100FB00D17180 /* Assets.xcassets in Resources */,
 				25CAA651210100FA00D17180 /* Main.storyboard in Resources */,
@@ -215,8 +213,6 @@
 			files = (
 				25CAA64E210100FA00D17180 /* ViewController.swift in Sources */,
 				25CAA64C210100FA00D17180 /* AppDelegate.swift in Sources */,
-				25BA57C021060587004987A1 /* DogApiClient.swift in Sources */,
-				25BA57C421061A9D004987A1 /* Dog.swift in Sources */,
 				F2C5206E21011E4A008EBDE5 /* ImageProvider.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
