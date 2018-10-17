@@ -1,0 +1,7 @@
+use_frameworks!
+
+platform :ios, :deployment_target => '8.0'
+
+target 'CocoapodsExample' do
+  pod 'ImageSource', :path => '../'
+end
