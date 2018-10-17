@@ -13,19 +13,30 @@ public extension CGImage {
     
     func scaled(_ scale: CGFloat) -> CGImage? {
         
-        let outputWidth = CGFloat(width) * scale
-        let outputHeight = CGFloat(height) * scale
+        let outputWidth = Int(CGFloat(width) * scale)
+        let outputHeight = Int(CGFloat(height) * scale)
         
-        guard let colorSpace = colorSpace,
-            let context = CGContext(
-                data: nil,
-                width: Int(outputWidth),
-                height: Int(outputHeight),
-                bitsPerComponent: bitsPerComponent,
-                bytesPerRow: 0,
-                space: colorSpace,
-                bitmapInfo: bitmapInfo.rawValue
-            ) else { return nil }
+        guard let colorSpace: CGColorSpace = {
+            if let colorSpace = colorSpace, colorSpace.model != .indexed {
+                return colorSpace
+            } else {
+                return CGColorSpaceCreateDeviceRGB()
+            }
+        }() else {
+            return nil
+        }
+        
+        guard let context = CGContext(
+            data: nil,
+            width: outputWidth,
+            height: outputHeight,
+            bitsPerComponent: bitsPerComponent,
+            bytesPerRow: 0,
+            space: colorSpace,
+            bitmapInfo: CGImageAlphaInfo.premultipliedLast.rawValue
+        ) else {
+            return nil
+        }
         
         context.interpolationQuality = .high
         context.draw(self, in: CGRect(origin: .zero, size: CGSize(width: outputWidth, height: outputHeight)))
