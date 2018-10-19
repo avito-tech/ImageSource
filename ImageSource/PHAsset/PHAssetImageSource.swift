@@ -78,6 +78,11 @@ public final class PHAssetImageSource: ImageSource {
                 finishDownload(requestId.toImageRequestId())
             }
             
+            if options.needsMetadata {
+                // TODO: Support metadata obtaining
+                assertionFailure("Metadata obtaining is not supported yet in \(type(of: self))")
+            }
+            
             // resultHandler не должен вызываться после отмены запроса
             if !cancelled {
                 resultHandler(ImageRequestResult(
