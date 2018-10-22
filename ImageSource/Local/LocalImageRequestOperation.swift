@@ -68,7 +68,7 @@ final class LocalImageRequestOperation<T: InitializableWithCGImage>: Operation, 
                 image: cgImage.flatMap { T(cgImage: $0) },
                 degraded: false,
                 requestId: id,
-                metadata: self.options.needsMetadata ? imageMetadata : [:]
+                metadata: ImageMetadata(self.options.needsMetadata ? imageMetadata : nil)
             ))
         }
     }
@@ -110,7 +110,7 @@ final class LocalImageRequestOperation<T: InitializableWithCGImage>: Operation, 
                 image: cgImage.flatMap { T(cgImage: $0) },
                 degraded: false,
                 requestId: id,
-                metadata: imageMetadata
+                metadata: ImageMetadata(imageMetadata)
             ))
         }
     }
