@@ -22,13 +22,12 @@ public struct ImageMetadata {
         var result = [String: Any]()
         for (key, value) in objcMetadata {
             guard let key = key as? String else { continue }
-            guard let nested = value as? [NSObject: AnyObject] else {
-                if JSONSerialization.isValidJSONObject([value]) {
-                    result[key] = value as Any
-                }
-                continue
+            
+            if let nested = value as? [NSObject: AnyObject] {
+                result[key] = ImageMetadata.convertObjcMetadata(nested) as Any
+            } else if JSONSerialization.isValidJSONObject([value]) { // Meta must contain only JSON serializable items
+                result[key] = value as Any
             }
-            result[key] = ImageMetadata.convertObjcMetadata(nested) as Any
         }
         return result
     }
