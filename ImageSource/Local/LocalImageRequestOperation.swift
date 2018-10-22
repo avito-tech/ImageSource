@@ -47,8 +47,10 @@ final class LocalImageRequestOperation<T: InitializableWithCGImage>: Operation, 
         let sourceOptions = [kCGImageSourceShouldCache: false] as CFDictionary
         let source = CGImageSourceCreateWithURL(url, sourceOptions)
         
-        let imageProperties = source.flatMap { CGImageSourceCopyPropertiesAtIndex($0, 0, nil) }
-        let orientation = (imageProperties as Dictionary?)?[kCGImagePropertyOrientation] as? Int
+        let cfProperties = source.flatMap { CGImageSourceCopyPropertiesAtIndex($0, 0, nil) }
+        let imageMetadata = cfProperties as [NSObject: AnyObject]? ?? [:]
+        
+        let orientation = imageMetadata[kCGImagePropertyOrientation] as? Int
         
         let imageCreationOptions = [kCGImageSourceShouldCacheImmediately: true] as CFDictionary
         
@@ -65,7 +67,8 @@ final class LocalImageRequestOperation<T: InitializableWithCGImage>: Operation, 
             resultHandler(ImageRequestResult(
                 image: cgImage.flatMap { T(cgImage: $0) },
                 degraded: false,
-                requestId: id
+                requestId: id,
+                metadata: ImageMetadata(self.options.needsMetadata ? imageMetadata : nil)
             ))
         }
     }
@@ -81,6 +84,12 @@ final class LocalImageRequestOperation<T: InitializableWithCGImage>: Operation, 
         let sourceOptions = [kCGImageSourceShouldCache: false] as CFDictionary
         
         let source = CGImageSourceCreateWithURL(url, sourceOptions)
+        var imageMetadata = [NSObject: AnyObject]()
+        
+        if self.options.needsMetadata {
+            let cfProperties = source.flatMap { CGImageSourceCopyPropertiesAtIndex($0, 0, nil) }
+            imageMetadata = cfProperties as [NSObject: AnyObject]? ?? [:]
+        }
         
         let options: [NSString: Any] = [
             kCGImageSourceThumbnailMaxPixelSize: max(size.width, size.height),
@@ -100,7 +109,8 @@ final class LocalImageRequestOperation<T: InitializableWithCGImage>: Operation, 
             resultHandler(ImageRequestResult(
                 image: cgImage.flatMap { T(cgImage: $0) },
                 degraded: false,
-                requestId: id
+                requestId: id,
+                metadata: ImageMetadata(imageMetadata)
             ))
         }
     }

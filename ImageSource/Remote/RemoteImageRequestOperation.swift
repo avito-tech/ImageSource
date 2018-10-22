@@ -68,6 +68,11 @@ final class RemoteImageRequestOperation<T: InitializableWithCGImage>: Operation,
                         
                         let cgImage = image.flatMap { self.finalCGImage(from: $0) }
                         
+                        if self.options.needsMetadata {
+                            // TODO: Support metadata obtaining
+                            assertionFailure("Metadata obtaining is not supported yet in \(type(of: self))")
+                        }
+                        
                         self.callbackQueue.async { [imageRequestId = self.id] in
                             self.options.onDownloadFinish?(imageRequestId)
                             self.resultHandler(ImageRequestResult(
