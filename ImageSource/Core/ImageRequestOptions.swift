@@ -10,7 +10,7 @@ public struct ImageRequestOptions {
     public var onDownloadFinish: ((ImageRequestId) -> ())?
     
     public init() {
-        self.needsMetadata = false
+        needsMetadata = false
     }
     
     public init(size: ImageSizeOption, deliveryMode: ImageDeliveryMode, needsMetadata: Bool = false) {

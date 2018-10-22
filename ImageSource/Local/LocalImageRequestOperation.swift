@@ -85,6 +85,7 @@ final class LocalImageRequestOperation<T: InitializableWithCGImage>: Operation, 
         
         let source = CGImageSourceCreateWithURL(url, sourceOptions)
         var imageMetadata = [NSObject: AnyObject]()
+        
         if self.options.needsMetadata {
             let cfProperties = source.flatMap { CGImageSourceCopyPropertiesAtIndex($0, 0, nil) }
             imageMetadata = cfProperties as [NSObject: AnyObject]? ?? [:]
