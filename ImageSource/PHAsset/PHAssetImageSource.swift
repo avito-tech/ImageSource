@@ -66,10 +66,11 @@ public final class PHAssetImageSource: ImageSource {
         }
 
         let id = imageManager.requestImage(for: asset, targetSize: size, contentMode: contentMode, options: phOptions) {
-            [weak self] image, info in
+            [weak self, asset = asset] image, info in
             
             let requestId = (info?[PHImageResultRequestIDKey] as? NSNumber)?.int32Value ?? 0
             let degraded = (info?[PHImageResultIsDegradedKey] as? NSNumber)?.boolValue ?? false
+            let isInCloud = (info?[PHImageResultIsInCloudKey] as? NSNumber)?.boolValue ?? false
             let cancelled = (info?[PHImageCancelledKey] as? NSNumber)?.boolValue ?? false || self?.cancelledRequestIds.contains(requestId.toImageRequestId()) == true
             let isLikelyToBeTheLastCallback = (image != nil && !degraded) || cancelled
             
@@ -78,18 +79,32 @@ public final class PHAssetImageSource: ImageSource {
                 finishDownload(requestId.toImageRequestId())
             }
             
-            if options.needsMetadata {
-                // TODO: Support metadata obtaining
-                assertionFailure("Metadata obtaining is not supported yet in \(type(of: self))")
-            }
-            
             // resultHandler не должен вызываться после отмены запроса
             if !cancelled {
-                resultHandler(ImageRequestResult(
-                    image: (image as? T?).flatMap { $0 } ?? image?.cgImage.flatMap { T(cgImage: $0) },
-                    degraded: degraded,
-                    requestId: requestId.toImageRequestId()
-                ))
+                let image = (image as? T?).flatMap { $0 } ?? image?.cgImage.flatMap { T(cgImage: $0) }
+                let requestId = requestId.toImageRequestId()
+                
+                if !isInCloud, isLikelyToBeTheLastCallback, options.needsMetadata {
+                    let editOptions = PHContentEditingInputRequestOptions()
+                    editOptions.isNetworkAccessAllowed = true
+                    
+                    asset.requestContentEditingInput(with: editOptions) { contentEditingInput, info in
+                        var imageMetadata = ImageMetadata()
+                        if let imageUrl = contentEditingInput?.fullSizeImageURL,
+                            let ciImage = CIImage(contentsOf: imageUrl) {
+                            imageMetadata = ImageMetadata(ciImage.properties)
+                        }
+                        
+                        resultHandler(ImageRequestResult(
+                            image: image,
+                            degraded: degraded,
+                            requestId: requestId,
+                            metadata: imageMetadata
+                        ))
+                    }
+                } else {
+                    resultHandler(ImageRequestResult(image: image, degraded: degraded, requestId: requestId))
+                }
             }
         }
         

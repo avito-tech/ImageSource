@@ -18,6 +18,7 @@ class ViewController: UICollectionViewController {
             bottom: cellSpacing,
             right: cellSpacing
         )
+        collectionView?.delegate = self
         
         ImageProvider().images { [weak self] images in
             self?.images = images
@@ -48,6 +49,21 @@ class ViewController: UICollectionViewController {
         }
         
         return cell
+    }
+    
+    // MARK: - UICollectionViewDelegate
+    override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let imageSource = images[indexPath.item]
+        imageSource.requestImage(
+            options: ImageRequestOptions(
+                size: .fitSize(CGSize(width: 1290, height: 960)),
+                deliveryMode: .best,
+                needsMetadata: true
+            ),
+            resultHandler: { (result: ImageRequestResult<UIImage>) in
+                print(result.metadata)
+            }
+        )
     }
     
     // MARK: - Private
