@@ -66,11 +66,11 @@ public final class PHAssetImageSource: ImageSource {
         }
 
         let id = imageManager.requestImage(for: asset, targetSize: size, contentMode: contentMode, options: phOptions) {
-            [weak self] image, info in
+            image, info in
             
             let requestId = (info?[PHImageResultRequestIDKey] as? NSNumber)?.int32Value ?? 0
             let degraded = (info?[PHImageResultIsDegradedKey] as? NSNumber)?.boolValue ?? false
-            let cancelled = (info?[PHImageCancelledKey] as? NSNumber)?.boolValue ?? false || self?.cancelledRequestIds.contains(requestId.toImageRequestId()) == true
+            let cancelled = (info?[PHImageCancelledKey] as? NSNumber)?.boolValue ?? false || self.cancelledRequestIds.contains(requestId.toImageRequestId()) == true
             let isLikelyToBeTheLastCallback = (image != nil && !degraded) || cancelled
             
             // progressHandler может никогда не вызваться с progress == 1, поэтому тут пытаемся угадать, завершилась ли загрузка
@@ -84,7 +84,7 @@ public final class PHAssetImageSource: ImageSource {
                 let requestId = requestId.toImageRequestId()
                 
                 if isLikelyToBeTheLastCallback, options.needsMetadata {
-                    self?.fetchMetadataAndProcessResult(
+                    self.fetchMetadataAndProcessResult(
                         image: image,
                         degraded: degraded,
                         requestId: requestId,
