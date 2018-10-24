@@ -66,11 +66,10 @@ public final class PHAssetImageSource: ImageSource {
         }
 
         let id = imageManager.requestImage(for: asset, targetSize: size, contentMode: contentMode, options: phOptions) {
-            [weak self, asset = asset] image, info in
+            [weak self] image, info in
             
             let requestId = (info?[PHImageResultRequestIDKey] as? NSNumber)?.int32Value ?? 0
             let degraded = (info?[PHImageResultIsDegradedKey] as? NSNumber)?.boolValue ?? false
-            let isInCloud = (info?[PHImageResultIsInCloudKey] as? NSNumber)?.boolValue ?? false
             let cancelled = (info?[PHImageCancelledKey] as? NSNumber)?.boolValue ?? false || self?.cancelledRequestIds.contains(requestId.toImageRequestId()) == true
             let isLikelyToBeTheLastCallback = (image != nil && !degraded) || cancelled
             
@@ -84,24 +83,13 @@ public final class PHAssetImageSource: ImageSource {
                 let image = (image as? T?).flatMap { $0 } ?? image?.cgImage.flatMap { T(cgImage: $0) }
                 let requestId = requestId.toImageRequestId()
                 
-                if !isInCloud, isLikelyToBeTheLastCallback, options.needsMetadata {
-                    let editOptions = PHContentEditingInputRequestOptions()
-                    editOptions.isNetworkAccessAllowed = true
-                    
-                    asset.requestContentEditingInput(with: editOptions) { contentEditingInput, info in
-                        var imageMetadata = ImageMetadata()
-                        if let imageUrl = contentEditingInput?.fullSizeImageURL,
-                            let ciImage = CIImage(contentsOf: imageUrl) {
-                            imageMetadata = ImageMetadata(ciImage.properties)
-                        }
-                        
-                        resultHandler(ImageRequestResult(
-                            image: image,
-                            degraded: degraded,
-                            requestId: requestId,
-                            metadata: imageMetadata
-                        ))
-                    }
+                if isLikelyToBeTheLastCallback, options.needsMetadata {
+                    self?.fetchMetadataAndProcessResult(
+                        image: image,
+                        degraded: degraded,
+                        requestId: requestId,
+                        resultHandler: resultHandler
+                    )
                 } else {
                     resultHandler(ImageRequestResult(image: image, degraded: degraded, requestId: requestId))
                 }
@@ -115,6 +103,9 @@ public final class PHAssetImageSource: ImageSource {
         dispatch_to_main_queue {
             self.cancelledRequestIds.insert(id)
             self.imageManager.cancelImageRequest(id.int32Value)
+            if let editingRequestId = self.editingRequestMap.removeValue(forKey: id) {
+                self.asset.cancelContentEditingInputRequest(editingRequestId)
+            }
         }
     }
     
@@ -131,6 +122,7 @@ public final class PHAssetImageSource: ImageSource {
     // MARK: - Private
     
     private var cancelledRequestIds = Set<ImageRequestId>()
+    private var editingRequestMap = [ImageRequestId: PHContentEditingInputRequestID]()
     
     private func imageRequestParameters(from options: ImageRequestOptions)
         -> (options: PHImageRequestOptions, size: CGSize, contentMode: PHImageContentMode)
@@ -163,6 +155,41 @@ public final class PHAssetImageSource: ImageSource {
         }
         
         return (options: phOptions, size: size, contentMode: contentMode)
+    }
+    
+    private func fetchMetadataAndProcessResult<T: InitializableWithCGImage>(
+        image: T?,
+        degraded: Bool,
+        requestId: ImageRequestId,
+        resultHandler: @escaping (ImageRequestResult<T>) -> ())
+    {
+        let editOptions = PHContentEditingInputRequestOptions()
+        editOptions.isNetworkAccessAllowed = true
+        
+        let editingRequestId = asset.requestContentEditingInput(with: editOptions) {
+            contentEditingInput, info in
+            
+            var imageMetadata = ImageMetadata()
+            if let imageUrl = contentEditingInput?.fullSizeImageURL,
+                let ciImage = CIImage(contentsOf: imageUrl) {
+                imageMetadata = ImageMetadata(ciImage.properties)
+            }
+            
+            dispatch_to_main_queue {
+                self.editingRequestMap.removeValue(forKey: requestId)
+            }
+            
+            resultHandler(ImageRequestResult(
+                image: image,
+                degraded: degraded,
+                requestId: requestId,
+                metadata: imageMetadata
+            ))
+        }
+        
+        dispatch_to_main_queue {
+            self.editingRequestMap[requestId] = editingRequestId
+        }
     }
 }
 
