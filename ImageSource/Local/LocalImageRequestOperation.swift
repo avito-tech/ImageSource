@@ -134,10 +134,12 @@ private final class GPSMetadataExtractor {
         let latitudeRef = coordinate.latitude < 0.0 ? "S" : "N"
         let longitudeRef = coordinate.longitude < 0.0 ? "W" : "E";
         
-        let dict: [NSString: AnyObject] = ["GPSLatitude": coordinate.latitude as AnyObject,
-                                           "GPSLatitudeRef": latitudeRef as AnyObject,
-                                           "GPSLongitude": coordinate.longitude as AnyObject,
-                                           "GPSLongitudeRef": longitudeRef as AnyObject]
+        let dict: [NSString: AnyObject] = [
+            "GPSLatitude": coordinate.latitude as AnyObject,
+            "GPSLatitudeRef": latitudeRef as AnyObject,
+            "GPSLongitude": coordinate.longitude as AnyObject,
+            "GPSLongitudeRef": longitudeRef as AnyObject
+        ]
         return ["GPS": dict as AnyObject]
     }
 }
