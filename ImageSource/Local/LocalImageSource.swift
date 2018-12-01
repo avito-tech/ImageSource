@@ -1,16 +1,19 @@
 import Foundation
 import ImageIO
 import MobileCoreServices
+import CoreLocation
 
 public final class LocalImageSource: ImageSource {
     
     public let path: String
+    public let location: CLLocation?
     
     // MARK: - Init
     
-    public init(path: String, previewImage: CGImage? = nil) {
+    public init(path: String, previewImage: CGImage? = nil, location: CLLocation? = nil) {
         self.path = path
         self.previewImage = previewImage
+        self.location = location
     }
     
     // MARK: - ImageSource
@@ -33,6 +36,7 @@ public final class LocalImageSource: ImageSource {
             id: requestId,
             path: path,
             options: options,
+            location: location,
             resultHandler: resultHandler
         )
         

@@ -1,6 +1,7 @@
 import Foundation
 import ImageIO
 import MobileCoreServices
+import CoreLocation
 
 /// Operation for requesting images stored in a local file.
 final class LocalImageRequestOperation<T: InitializableWithCGImage>: Operation, ImageRequestIdentifiable {
@@ -9,22 +10,26 @@ final class LocalImageRequestOperation<T: InitializableWithCGImage>: Operation, 
     
     private let path: String
     private let options: ImageRequestOptions
-    private let resultHandler: (ImageRequestResult<T>) -> ()
     private let callbackQueue: DispatchQueue
+    private let location: CLLocation?
+    private let resultHandler: (ImageRequestResult<T>) -> ()
     
     // Можно сделать failable/throwing init, который будет возвращать nil/кидать исключение, если url не файловый,
     // но пока не вижу в этом особой необходимости
     init(id: ImageRequestId,
          path: String,
          options: ImageRequestOptions,
-         resultHandler: @escaping (ImageRequestResult<T>) -> (),
-         callbackQueue: DispatchQueue = .main)
+         callbackQueue: DispatchQueue = .main,
+         location: CLLocation? = nil,
+         resultHandler: @escaping (ImageRequestResult<T>) -> ()
+        )
     {
         self.id = id
         self.path = path
         self.options = options
-        self.resultHandler = resultHandler
         self.callbackQueue = callbackQueue
+        self.location = location
+        self.resultHandler = resultHandler
     }
     
     override func main() {
@@ -48,9 +53,11 @@ final class LocalImageRequestOperation<T: InitializableWithCGImage>: Operation, 
         let source = CGImageSourceCreateWithURL(url, sourceOptions)
         
         let cfProperties = source.flatMap { CGImageSourceCopyPropertiesAtIndex($0, 0, nil) }
-        let imageMetadata = cfProperties as [NSObject: AnyObject]? ?? [:]
+        var imageMetadata = cfProperties as [NSObject: AnyObject]? ?? [:]
         
         let orientation = imageMetadata[kCGImagePropertyOrientation] as? Int
+        let gpsMeta = GPSMetadataExtractor.gpsMetaFromLocation(location)
+        imageMetadata.merge(gpsMeta) { current, _ in current }
         
         let imageCreationOptions = [kCGImageSourceShouldCacheImmediately: true] as CFDictionary
         
@@ -89,6 +96,8 @@ final class LocalImageRequestOperation<T: InitializableWithCGImage>: Operation, 
         if self.options.needsMetadata {
             let cfProperties = source.flatMap { CGImageSourceCopyPropertiesAtIndex($0, 0, nil) }
             imageMetadata = cfProperties as [NSObject: AnyObject]? ?? [:]
+            let gpsMeta = GPSMetadataExtractor.gpsMetaFromLocation(location)
+            imageMetadata.merge(gpsMeta) { current, _ in current }
         }
         
         let options: [NSString: Any] = [
@@ -113,5 +122,22 @@ final class LocalImageRequestOperation<T: InitializableWithCGImage>: Operation, 
                 metadata: ImageMetadata(imageMetadata)
             ))
         }
+    }
+}
+
+private final class GPSMetadataExtractor {
+    
+    static func gpsMetaFromLocation(_ location: CLLocation?) -> [NSString: AnyObject] {
+        guard let coordinate = location?.coordinate else {
+            return [:]
+        }
+        let latitudeRef = coordinate.latitude < 0.0 ? "S" : "N"
+        let longitudeRef = coordinate.longitude < 0.0 ? "W" : "E";
+        
+        let dict: [NSString: AnyObject] = ["GPSLatitude": coordinate.latitude as AnyObject,
+                                           "GPSLatitudeRef": latitudeRef as AnyObject,
+                                           "GPSLongitude": coordinate.longitude as AnyObject,
+                                           "GPSLongitudeRef": longitudeRef as AnyObject]
+        return ["GPS": dict as AnyObject]
     }
 }
