@@ -1,6 +1,7 @@
 import Foundation
 import ImageIO
 import MobileCoreServices
+import CoreLocation
 
 /// Operation for requesting images stored in a local file.
 final class LocalImageRequestOperation<T: InitializableWithCGImage>: Operation, ImageRequestIdentifiable {
@@ -9,22 +10,26 @@ final class LocalImageRequestOperation<T: InitializableWithCGImage>: Operation, 
     
     private let path: String
     private let options: ImageRequestOptions
-    private let resultHandler: (ImageRequestResult<T>) -> ()
     private let callbackQueue: DispatchQueue
+    private let additionalMetadata: [String: Any]
+    private let resultHandler: (ImageRequestResult<T>) -> ()
     
     // Можно сделать failable/throwing init, который будет возвращать nil/кидать исключение, если url не файловый,
     // но пока не вижу в этом особой необходимости
     init(id: ImageRequestId,
          path: String,
          options: ImageRequestOptions,
-         resultHandler: @escaping (ImageRequestResult<T>) -> (),
-         callbackQueue: DispatchQueue = .main)
+         callbackQueue: DispatchQueue = .main,
+         additionalMetadata: [String: Any] = [:],
+         resultHandler: @escaping (ImageRequestResult<T>) -> ()
+        )
     {
         self.id = id
         self.path = path
         self.options = options
-        self.resultHandler = resultHandler
         self.callbackQueue = callbackQueue
+        self.additionalMetadata = additionalMetadata
+        self.resultHandler = resultHandler
     }
     
     override func main() {
@@ -48,9 +53,10 @@ final class LocalImageRequestOperation<T: InitializableWithCGImage>: Operation, 
         let source = CGImageSourceCreateWithURL(url, sourceOptions)
         
         let cfProperties = source.flatMap { CGImageSourceCopyPropertiesAtIndex($0, 0, nil) }
-        let imageMetadata = cfProperties as [NSObject: AnyObject]? ?? [:]
+        var imageMetadata = cfProperties as [NSObject: AnyObject]? ?? [:]
         
         let orientation = imageMetadata[kCGImagePropertyOrientation] as? Int
+        imageMetadata.merge(additionalMetadata as [NSObject : AnyObject]) { current, _ in current }
         
         let imageCreationOptions = [kCGImageSourceShouldCacheImmediately: true] as CFDictionary
         
@@ -89,6 +95,7 @@ final class LocalImageRequestOperation<T: InitializableWithCGImage>: Operation, 
         if self.options.needsMetadata {
             let cfProperties = source.flatMap { CGImageSourceCopyPropertiesAtIndex($0, 0, nil) }
             imageMetadata = cfProperties as [NSObject: AnyObject]? ?? [:]
+            imageMetadata.merge(additionalMetadata as [NSObject : AnyObject]) { current, _ in current }
         }
         
         let options: [NSString: Any] = [
