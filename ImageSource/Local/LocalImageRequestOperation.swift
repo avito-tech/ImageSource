@@ -11,7 +11,7 @@ final class LocalImageRequestOperation<T: InitializableWithCGImage>: Operation, 
     private let path: String
     private let options: ImageRequestOptions
     private let callbackQueue: DispatchQueue
-    private let additionalMetadata: [NSString: AnyObject]
+    private let additionalMetadata: [String: Any]
     private let resultHandler: (ImageRequestResult<T>) -> ()
     
     // Можно сделать failable/throwing init, который будет возвращать nil/кидать исключение, если url не файловый,
@@ -20,7 +20,7 @@ final class LocalImageRequestOperation<T: InitializableWithCGImage>: Operation, 
          path: String,
          options: ImageRequestOptions,
          callbackQueue: DispatchQueue = .main,
-         additionalMetadata: [NSString: AnyObject] = [:],
+         additionalMetadata: [String: Any] = [:],
          resultHandler: @escaping (ImageRequestResult<T>) -> ()
         )
     {
@@ -56,7 +56,7 @@ final class LocalImageRequestOperation<T: InitializableWithCGImage>: Operation, 
         var imageMetadata = cfProperties as [NSObject: AnyObject]? ?? [:]
         
         let orientation = imageMetadata[kCGImagePropertyOrientation] as? Int
-        imageMetadata.merge(additionalMetadata) { current, _ in current }
+        imageMetadata.merge(additionalMetadata as [NSObject : AnyObject]) { current, _ in current }
         
         let imageCreationOptions = [kCGImageSourceShouldCacheImmediately: true] as CFDictionary
         
@@ -95,7 +95,7 @@ final class LocalImageRequestOperation<T: InitializableWithCGImage>: Operation, 
         if self.options.needsMetadata {
             let cfProperties = source.flatMap { CGImageSourceCopyPropertiesAtIndex($0, 0, nil) }
             imageMetadata = cfProperties as [NSObject: AnyObject]? ?? [:]
-            imageMetadata.merge(additionalMetadata) { current, _ in current }
+            imageMetadata.merge(additionalMetadata as [NSObject : AnyObject]) { current, _ in current }
         }
         
         let options: [NSString: Any] = [
