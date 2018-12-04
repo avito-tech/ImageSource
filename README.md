@@ -71,10 +71,3 @@ imageSource.imageSize { size in
     // do something with size
 }
 ```
-
-## <a name="custom-imagesource" /> Implementing custom ImageSource
-If none of the existing ready-to-use ImageSource classes meet your needs, you can implement one yourself.
-There are however some guidelines that you should take into account in the process to make sure that your implementation
-is behaving in a way that's predictable and familiar to all ImageSource users.
-
-// TODO
