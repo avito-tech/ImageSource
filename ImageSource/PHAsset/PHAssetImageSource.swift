@@ -2,11 +2,24 @@ import Photos
 
 public final class PHAssetImageSource: ImageSource {
 
-    public let asset: PHAsset
+    public var asset: PHAsset {
+        return loadAsset()
+    }
+    
+    private let loadAsset: () -> PHAsset
     private let imageManager: PHImageManager
 
     public init(asset: PHAsset, imageManager: PHImageManager = PHImageManager.default()) {
-        self.asset = asset
+        self.loadAsset = { asset }
+        self.imageManager = imageManager
+    }
+    
+    public init(
+        fetchResult: PHFetchResult<PHAsset>,
+        index: Int,
+        imageManager: PHImageManager = PHImageManager.default())
+    {
+        self.loadAsset = { fetchResult.object(at: index) }
         self.imageManager = imageManager
     }
 
@@ -18,14 +31,15 @@ public final class PHAssetImageSource: ImageSource {
         options.deliveryMode = .highQualityFormat
         options.isNetworkAccessAllowed = true
         
-        imageManager.requestImageData(for: asset, options: options) { data, _, _, _ in
+        imageManager.requestImageData(for: loadAsset(), options: options) { data, _, _, _ in
             completion(data)
         }
     }
     
     public func imageSize(completion: @escaping (CGSize?) -> ()) {
         dispatch_to_main_queue {
-            completion(CGSize(width: self.asset.pixelWidth, height: self.asset.pixelHeight))
+            let asset = self.loadAsset()
+            completion(CGSize(width: asset.pixelWidth, height: asset.pixelHeight))
         }
     }
     
@@ -64,6 +78,8 @@ public final class PHAssetImageSource: ImageSource {
                 finishDownload(imageRequestId.toImageRequestId())
             }
         }
+        
+        let asset = loadAsset()
 
         let id = imageManager.requestImage(for: asset, targetSize: size, contentMode: contentMode, options: phOptions) {
             image, info in
@@ -104,7 +120,7 @@ public final class PHAssetImageSource: ImageSource {
             self.cancelledRequestIds.insert(id)
             self.imageManager.cancelImageRequest(id.int32Value)
             if let editingRequestId = self.editingRequestMap.removeValue(forKey: id) {
-                self.asset.cancelContentEditingInputRequest(editingRequestId)
+                self.loadAsset().cancelContentEditingInputRequest(editingRequestId)
             }
         }
     }
@@ -113,7 +129,7 @@ public final class PHAssetImageSource: ImageSource {
         if other === self {
             return true
         } else if let other = other as? PHAssetImageSource {
-            return other.asset.localIdentifier == asset.localIdentifier
+            return other.loadAsset().localIdentifier == loadAsset().localIdentifier
         } else {
             return false
         }
@@ -166,7 +182,7 @@ public final class PHAssetImageSource: ImageSource {
         let editOptions = PHContentEditingInputRequestOptions()
         editOptions.isNetworkAccessAllowed = true
         
-        let editingRequestId = asset.requestContentEditingInput(with: editOptions) {
+        let editingRequestId = loadAsset().requestContentEditingInput(with: editOptions) {
             contentEditingInput, info in
             
             var imageMetadata = ImageMetadata()
