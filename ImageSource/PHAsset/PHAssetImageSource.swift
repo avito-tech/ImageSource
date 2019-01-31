@@ -69,7 +69,7 @@ public final class PHAssetImageSource: ImageSource {
         }
         
         phOptions.progressHandler = { progress, _, _, info in
-            let imageRequestId = (info?[PHImageResultRequestIDKey] as? NSNumber)?.int32Value ?? 0
+            let imageRequestId = (info?[PHImageResultRequestIDKey] as? NSNumber)?.intValue ?? 0
             
             if !downloadStarted {
                 startDownload(imageRequestId.toImageRequestId())
@@ -84,7 +84,7 @@ public final class PHAssetImageSource: ImageSource {
         let id = imageManager.requestImage(for: asset, targetSize: size, contentMode: contentMode, options: phOptions) {
             image, info in
             
-            let requestId = (info?[PHImageResultRequestIDKey] as? NSNumber)?.int32Value ?? 0
+            let requestId = (info?[PHImageResultRequestIDKey] as? NSNumber)?.intValue ?? 0
             let degraded = (info?[PHImageResultIsDegradedKey] as? NSNumber)?.boolValue ?? false
             let cancelled = (info?[PHImageCancelledKey] as? NSNumber)?.boolValue ?? false || self.cancelledRequestIds.contains(requestId.toImageRequestId()) == true
             let isLikelyToBeTheLastCallback = (image != nil && !degraded) || cancelled
@@ -118,7 +118,11 @@ public final class PHAssetImageSource: ImageSource {
     public func cancelRequest(_ id: ImageRequestId) {
         dispatch_to_main_queue {
             self.cancelledRequestIds.insert(id)
-            self.imageManager.cancelImageRequest(id.int32Value)
+            
+            if let idAsInt32 = Int32(exactly: id.intValue) {
+                self.imageManager.cancelImageRequest(idAsInt32)
+            }
+            
             if let editingRequestId = self.editingRequestMap.removeValue(forKey: id) {
                 self.loadAsset().cancelContentEditingInputRequest(editingRequestId)
             }

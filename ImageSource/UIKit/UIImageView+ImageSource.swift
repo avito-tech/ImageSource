@@ -79,10 +79,10 @@ public extension UIImageView {
     private var imageRequestId: ImageRequestId? {
         get {
             let intAsNSNumber = objc_getAssociatedObject(self, &UIImageView.imageRequestIdKey) as? NSNumber
-            return intAsNSNumber?.int32Value.toImageRequestId()
+            return intAsNSNumber?.intValue.toImageRequestId()
         }
         set {
-            let number = newValue.flatMap { NSNumber(value: $0.int32Value) }
+            let number = newValue.flatMap { NSNumber(value: $0.intValue) }
             objc_setAssociatedObject(self, &UIImageView.imageRequestIdKey, number, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
         }
     }

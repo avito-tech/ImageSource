@@ -1,7 +1,7 @@
 Pod::Spec.new do |s|
   s.name                   = 'ImageSource'
   s.module_name            = 'ImageSource'
-  s.version                = '2.2.0'
+  s.version                = '2.2.1'
   s.summary                = 'Image abstraction toolkit'
   s.homepage               = 'https://github.com/avito-tech/ImageSource'
   s.license                = 'MIT'
