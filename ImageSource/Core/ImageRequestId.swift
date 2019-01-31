@@ -1,25 +1,25 @@
 public struct ImageRequestId: Hashable, Equatable {
     
-    internal let int32Value: Int32
+    internal let intValue: Int
     
     // MARK: - Init
     
-    internal init(int32Value: Int32) {
-        self.int32Value = int32Value
+    internal init(intValue: Int) {
+        self.intValue = intValue
     }
     
     public init<T: Hashable>(hashable: T) {
-        self.init(int32Value: Int32(hashable.hashValue))
+        self.init(intValue: hashable.hashValue)
     }
     
     // MARK: - Hashable
     public var hashValue: Int {
-        return int32Value.hashValue
+        return intValue.hashValue
     }
     
     // MARK: - Equatable
     public static func ==(id1: ImageRequestId, id2: ImageRequestId) -> Bool {
-        return id1.int32Value == id2.int32Value
+        return id1.intValue == id2.intValue
     }
 }
 
@@ -27,12 +27,12 @@ public struct ImageRequestId: Hashable, Equatable {
 
 extension Int32 {
     func toImageRequestId() -> ImageRequestId {
-        return ImageRequestId(int32Value: self)
+        return ImageRequestId(intValue: Int(self))
     }
 }
 
 extension Int {
     func toImageRequestId() -> ImageRequestId {
-        return ImageRequestId(int32Value: Int32(self))
+        return ImageRequestId(intValue: self)
     }
 }
