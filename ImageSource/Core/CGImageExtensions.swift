@@ -5,7 +5,7 @@ public extension CGImage {
     
     func imageFixedForOrientation(_ orientation: ExifOrientation) -> CGImage? {
         
-        let ciContext = CIContext.fixed_context(options: [kCIContextUseSoftwareRenderer: false])
+        let ciContext = CIContext(options: [CIContextOption.useSoftwareRenderer: false])
         let ciImage = CIImage(cgImage: self).oriented(forExifOrientation: Int32(orientation.rawValue))
         
         return ciContext.createCGImage(ciImage, from: ciImage.extent)
