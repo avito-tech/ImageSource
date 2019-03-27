@@ -2,24 +2,24 @@ PODS:
   - Alamofire (4.7.3)
   - AlamofireImage (3.3.1):
     - Alamofire (~> 4.5)
-  - ImageSource (2.0.2):
-    - ImageSource/AlamofireImage (= 2.0.2)
-    - ImageSource/Core (= 2.0.2)
-    - ImageSource/Local (= 2.0.2)
-    - ImageSource/PHAsset (= 2.0.2)
-    - ImageSource/Remote (= 2.0.2)
-  - ImageSource/AlamofireImage (2.0.2):
+  - ImageSource (2.2.1):
+    - ImageSource/AlamofireImage (= 2.2.1)
+    - ImageSource/Core (= 2.2.1)
+    - ImageSource/Local (= 2.2.1)
+    - ImageSource/PHAsset (= 2.2.1)
+    - ImageSource/Remote (= 2.2.1)
+  - ImageSource/AlamofireImage (2.2.1):
     - AlamofireImage (~> 3)
     - ImageSource/Remote
-  - ImageSource/Core (2.0.2)
-  - ImageSource/Local (2.0.2):
+  - ImageSource/Core (2.2.1)
+  - ImageSource/Local (2.2.1):
     - ImageSource/Core
-  - ImageSource/PHAsset (2.0.2):
+  - ImageSource/PHAsset (2.2.1):
     - ImageSource/Core
-  - ImageSource/Remote (2.0.2):
+  - ImageSource/Remote (2.2.1):
     - ImageSource/Core
     - ImageSource/UIKit
-  - ImageSource/UIKit (2.0.2):
+  - ImageSource/UIKit (2.2.1):
     - ImageSource/Core
 
 DEPENDENCIES:
@@ -37,7 +37,7 @@ EXTERNAL SOURCES:
 SPEC CHECKSUMS:
   Alamofire: c7287b6e5d7da964a70935e5db17046b7fde6568
   AlamofireImage: 3b35b586853abaf94ca1250f4e94cff3c21a4c0d
-  ImageSource: 631c52e9960acebb990ed417246dfb8938455e26
+  ImageSource: 4acb0701d20195f621e0cd0c9c1204a3743b1cdd
 
 PODFILE CHECKSUM: 47228225d977e9b8da6c45ada0d3866a29763186
 
