@@ -5,14 +5,12 @@ import MobileCoreServices
 public final class LocalImageSource: ImageSource {
     
     public let path: String
-    public let additionalMetadata: [String: Any]
     
     // MARK: - Init
     
-    public init(path: String, previewImage: CGImage? = nil, additionalMetadata: [String: Any] = [:]) {
+    public init(path: String, previewImage: CGImage? = nil) {
         self.path = path
         self.previewImage = previewImage
-        self.additionalMetadata = additionalMetadata
     }
     
     // MARK: - ImageSource
@@ -35,7 +33,6 @@ public final class LocalImageSource: ImageSource {
             id: requestId,
             path: path,
             options: options,
-            additionalMetadata: additionalMetadata,
             resultHandler: resultHandler
         )
         
