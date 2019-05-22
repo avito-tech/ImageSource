@@ -1,7 +1,7 @@
 PODS:
-  - Alamofire (4.8.1)
-  - AlamofireImage (3.4.0):
-    - Alamofire (~> 4.7)
+  - Alamofire (4.8.2)
+  - AlamofireImage (3.5.2):
+    - Alamofire (~> 4.8)
   - ImageSource (3.0.0):
     - ImageSource/AlamofireImage (= 3.0.0)
     - ImageSource/Core (= 3.0.0)
@@ -9,7 +9,7 @@ PODS:
     - ImageSource/PHAsset (= 3.0.0)
     - ImageSource/Remote (= 3.0.0)
   - ImageSource/AlamofireImage (3.0.0):
-    - AlamofireImage (= 3.4.0)
+    - AlamofireImage (~> 3.4)
     - ImageSource/Remote
   - ImageSource/Core (3.0.0)
   - ImageSource/Local (3.0.0):
@@ -35,9 +35,9 @@ EXTERNAL SOURCES:
     :path: "../"
 
 SPEC CHECKSUMS:
-  Alamofire: 16ce2c353fb72865124ddae8a57c5942388f4f11
-  AlamofireImage: 5f79836de27236819b13b27d0c97be6c205976fe
-  ImageSource: 54a92fdb1b41bd97eefb972a6af8fac04792814e
+  Alamofire: ae5c501addb7afdbb13687d7f2f722c78734c2d3
+  AlamofireImage: 63cfe3baf1370be6c498149687cf6db3e3b00999
+  ImageSource: fa7c80ca815ba05c0048601f8d351bb87d360258
 
 PODFILE CHECKSUM: e6096bdcf2520ae5908bfc725a72bd76f971a1c6
 

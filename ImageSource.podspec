@@ -44,7 +44,7 @@ Pod::Spec.new do |s|
 
   s.subspec 'AlamofireImage' do |ai|
     ai.dependency 'ImageSource/Remote'
-    ai.dependency 'AlamofireImage', '3.4.0'
+    ai.dependency 'AlamofireImage', '~> 3.4'
     ai.source_files = 'ImageSource/AlamofireImage/*'
   end
   
