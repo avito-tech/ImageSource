@@ -13,8 +13,9 @@ public struct ImageRequestId: Hashable, Equatable {
     }
     
     // MARK: - Hashable
-    public var hashValue: Int {
-        return intValue.hashValue
+    
+    public func hash(into hasher: inout Hasher) {
+        hasher.combine(intValue)
     }
     
     // MARK: - Equatable

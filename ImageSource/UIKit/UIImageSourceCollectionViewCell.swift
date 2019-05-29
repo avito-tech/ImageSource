@@ -31,7 +31,7 @@ open class UIImageSourceCollectionViewCell: UICollectionViewCell {
     open override func layoutSubviews() {
         super.layoutSubviews()
         
-        imageView.frame = UIEdgeInsetsInsetRect(contentView.bounds, imageViewInsets)
+        imageView.frame = contentView.bounds.inset(by: imageViewInsets)
         
         updateImage()
     }
