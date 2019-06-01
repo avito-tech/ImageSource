@@ -9,6 +9,7 @@ Pod::Spec.new do |s|
   s.source                 = { :git => 'https://github.com/avito-tech/ImageSource.git', :tag => "#{s.version}" }
   s.platform               = :ios, '9.0'
   s.ios.deployment_target  = '9.0'
+  s.swift_version          = '4.2'
   s.requires_arc           = true
   s.default_subspec        = 'Core', 'PHAsset', 'Local', 'Remote', 'AlamofireImage'
   
