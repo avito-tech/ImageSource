@@ -31,7 +31,8 @@ open class UIImageSourceCollectionViewCell: UICollectionViewCell {
     open override func layoutSubviews() {
         super.layoutSubviews()
         
-        imageView.frame = contentView.bounds.inset(by: imageViewInsets)
+        imageView.bounds = CGRect(origin: .zero, size: contentView.bounds.inset(by: imageViewInsets).size)
+        imageView.center = CGPoint(x: bounds.midX, y: bounds.midY)
         
         updateImage()
     }
