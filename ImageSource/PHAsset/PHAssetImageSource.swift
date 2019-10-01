@@ -50,7 +50,6 @@ public final class PHAssetImageSource: ImageSource {
         -> ImageRequestId
     {
         let (phOptions, size, contentMode) = imageRequestParameters(from: options)
-        phOptions.resizeMode = .none
         
         var downloadStarted = false
         var downloadFinished = false
@@ -165,6 +164,7 @@ public final class PHAssetImageSource: ImageSource {
         
         switch options.size {
         case .fullResolution:
+            phOptions.resizeMode = .none
             size = PHImageManagerMaximumSize
             contentMode = .aspectFill
         case .fitSize(let sizeToFit):
