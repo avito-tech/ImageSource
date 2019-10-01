@@ -164,6 +164,7 @@ public final class PHAssetImageSource: ImageSource {
         
         switch options.size {
         case .fullResolution:
+            // iOS 13 PHImageManagerMaximumSize maybe equal (width: -1, height: -1) if resizeMode != .none
             phOptions.resizeMode = .none
             size = PHImageManagerMaximumSize
             contentMode = .aspectFill
