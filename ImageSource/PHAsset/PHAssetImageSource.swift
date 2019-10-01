@@ -50,6 +50,7 @@ public final class PHAssetImageSource: ImageSource {
         -> ImageRequestId
     {
         let (phOptions, size, contentMode) = imageRequestParameters(from: options)
+        phOptions.resizeMode = .none
         
         var downloadStarted = false
         var downloadFinished = false
