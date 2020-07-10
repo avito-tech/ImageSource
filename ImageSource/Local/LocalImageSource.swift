@@ -5,11 +5,13 @@ import MobileCoreServices
 public final class LocalImageSource: ImageSource {
     
     public let path: String
+    public let url: URL?
     
     // MARK: - Init
     
-    public init(path: String, previewImage: CGImage? = nil) {
+    public init(path: String, url: URL? = nil, previewImage: CGImage? = nil) {
         self.path = path
+        self.url = url
         self.previewImage = previewImage
     }
     
@@ -85,8 +87,14 @@ public final class LocalImageSource: ImageSource {
     }
     
     public func fullResolutionImageData(completion: @escaping (Data?) -> ()) {
-        SharedQueues.imageProcessingQueue.addOperation { [path] in
-            let data = try? Data(contentsOf: URL(fileURLWithPath: path))
+        SharedQueues.imageProcessingQueue.addOperation { [weak self] in
+            guard let self = self else { return }
+            let data: Data?
+            if let url = self.url {
+                data = try? Data(contentsOf: url)
+            } else {
+                data = try? Data(contentsOf: URL(fileURLWithPath: self.path))
+            }
             DispatchQueue.main.async {
                 completion(data)
             }
