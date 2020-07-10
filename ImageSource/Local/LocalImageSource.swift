@@ -5,13 +5,18 @@ import MobileCoreServices
 public final class LocalImageSource: ImageSource {
     
     public let path: String
-    public let url: URL?
+    public let url: URL? = nil
     
     // MARK: - Init
     
-    public init(path: String, url: URL? = nil, previewImage: CGImage? = nil) {
+    public init(path: String, previewImage: CGImage? = nil) {
         self.path = path
+        self.previewImage = previewImage
+    }
+    
+    public init(url: URL?, previewImage: CGImage? = nil) {
         self.url = url
+        self.path = url.absoluteString
         self.previewImage = previewImage
     }
     
