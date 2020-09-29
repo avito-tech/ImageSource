@@ -62,6 +62,7 @@ open class UIImageSourceCollectionViewCell: UICollectionViewCell {
         
         let requestId = imageView.setImage(
             fromSource: imageSource,
+            placeholderDeferred: true,
             adjustOptions: { [weak self] options in
                 self?.adjustImageRequestOptions(&options)
             },

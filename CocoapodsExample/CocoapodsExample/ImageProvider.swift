@@ -48,6 +48,9 @@ final class ImageProvider {
             }
         case .denied, .restricted:
             completion([])
+        case .limited:
+            assertionFailure("`PHAuthorizationStatus.limited` is not handled in this project")
+            completion([])
         }
     }
     
