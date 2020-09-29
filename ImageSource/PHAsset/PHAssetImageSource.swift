@@ -222,6 +222,8 @@ private extension PHImageContentMode {
             return "AspectFit"
         case .aspectFill:
             return "AspectFill"
+        @unknown default:
+            return "\(self.rawValue)"
         }
     }
 }

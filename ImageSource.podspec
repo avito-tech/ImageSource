@@ -1,7 +1,7 @@
 Pod::Spec.new do |s|
   s.name                   = 'ImageSource'
   s.module_name            = 'ImageSource'
-  s.version                = '3.0.1'
+  s.version                = '3.0.2'
   s.summary                = 'Image abstraction toolkit'
   s.homepage               = 'https://github.com/avito-tech/ImageSource'
   s.license                = 'MIT'
@@ -25,13 +25,13 @@ Pod::Spec.new do |s|
   end
   
   s.subspec 'Local' do |ls|
-    ls.frameworks = 'ImageIO', 'MobileCoreServices'
+    ls.frameworks = 'ImageIO', 'CoreServices'
 	  ls.dependency 'ImageSource/Core'
 	  ls.source_files = 'ImageSource/Local/*'
   end
   
   s.subspec 'Remote' do |rs|
-    rs.frameworks = 'ImageIO', 'MobileCoreServices'
+    rs.frameworks = 'ImageIO', 'CoreServices'
     rs.dependency 'ImageSource/Core'
     rs.dependency 'ImageSource/UIKit'
     rs.source_files = 'ImageSource/Remote/*'

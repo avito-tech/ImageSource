@@ -51,6 +51,9 @@ final class ImageProvider {
         case .limited:
             assertionFailure("`PHAuthorizationStatus.limited` is not handled in this project")
             completion([])
+        @unknown default:
+            assertionFailure("Unknown `PHAuthorizationStatus`")
+            completion([])
         }
     }
     

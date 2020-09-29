@@ -50,7 +50,7 @@ final class LocalImageRequestOperation<T: InitializableWithCGImage>: Operation, 
         let source = CGImageSourceCreateWithURL(url, sourceOptions)
         
         let cfProperties = source.flatMap { CGImageSourceCopyPropertiesAtIndex($0, 0, nil) }
-        var imageMetadata = cfProperties as [NSObject: AnyObject]? ?? [:]
+        let imageMetadata = cfProperties as [NSObject: AnyObject]? ?? [:]
         
         let orientation = imageMetadata[kCGImagePropertyOrientation] as? Int
         

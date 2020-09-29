@@ -17,6 +17,9 @@ public extension UIImage.Orientation {
             return .leftMirrored
         case .right:
             return .left
+        @unknown default:
+            assertionFailure("Unknown `UIImage.Orientation`, assuming `.up`")
+            return .up
         }
     }
 }
