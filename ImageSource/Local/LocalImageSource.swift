@@ -4,8 +4,8 @@ import MobileCoreServices
 
 public final class LocalImageSource: ImageSource {
     
-    public var path: String { url.path }
     public let url: URL
+    public var path: String { url.path }
     
     // MARK: - Init
     
@@ -15,6 +15,8 @@ public final class LocalImageSource: ImageSource {
     }
     
     public init(url: URL, previewImage: CGImage? = nil) {
+        assert(url.isFileURL, "File URL expected. Use \(RemoteImageSource.self) for remote URLs.")
+        
         self.url = url
         self.previewImage = previewImage
     }
@@ -59,11 +61,10 @@ public final class LocalImageSource: ImageSource {
         if let fullSize = fullSize {
             dispatch_to_main_queue { completion(fullSize) }
         } else {
-            SharedQueues.imageProcessingQueue.addOperation { [weak self, path] in
+            SharedQueues.imageProcessingQueue.addOperation { [weak self, url] in
                 
-                let url = NSURL(fileURLWithPath: path)
                 let sourceOptions = [kCGImageSourceShouldCache: false] as CFDictionary
-                let source = CGImageSourceCreateWithURL(url, sourceOptions)
+                let source = CGImageSourceCreateWithURL(url as CFURL, sourceOptions)
                 let options = source.flatMap { CGImageSourceCopyPropertiesAtIndex($0, 0, nil) } as Dictionary?
                 let width = options?[kCGImagePropertyPixelWidth] as? Int
                 let height = options?[kCGImagePropertyPixelHeight] as? Int
@@ -91,9 +92,8 @@ public final class LocalImageSource: ImageSource {
     }
     
     public func fullResolutionImageData(completion: @escaping (Data?) -> ()) {
-        SharedQueues.imageProcessingQueue.addOperation { [weak self] in
-            guard let self = self else { return }
-            let data = try? Data(contentsOf: self.url)
+        SharedQueues.imageProcessingQueue.addOperation { [url] in
+            let data = try? Data(contentsOf: url)
             DispatchQueue.main.async {
                 completion(data)
             }
