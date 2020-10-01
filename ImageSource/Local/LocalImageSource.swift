@@ -15,7 +15,7 @@ public final class LocalImageSource: ImageSource {
     }
     
     public init(url: URL, previewImage: CGImage? = nil) {
-        assert(url.isFileURL, "File URL expected. Use \(RemoteImageSource.self) for remote URLs.")
+        assert(url.isFileURL, "File URL expected. Use `RemoteImageSource` for remote URLs.")
         
         self.url = url
         self.previewImage = previewImage
