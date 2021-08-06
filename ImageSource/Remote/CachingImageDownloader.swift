@@ -10,6 +10,6 @@ public protocol CachingImageDownloader: ImageDownloader {
     func cachedImageForUrl(_: URL) -> CGImage?
 }
 
-public protocol CancellableImageDownload: class {
+public protocol CancellableImageDownload: AnyObject {
     func cancel()
 }
