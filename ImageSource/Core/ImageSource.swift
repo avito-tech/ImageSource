@@ -1,6 +1,6 @@
 import CoreGraphics
 
-public protocol ImageSource: class {
+public protocol ImageSource: AnyObject {
     
     /**
      - Parameter resultHandler: Closure that is called when image is received or when image retreivement fails.
