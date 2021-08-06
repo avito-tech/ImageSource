@@ -1,14 +1,14 @@
 Pod::Spec.new do |s|
   s.name                   = 'ImageSource'
   s.module_name            = 'ImageSource'
-  s.version                = '3.0.2'
+  s.version                = '3.1.0'
   s.summary                = 'Image abstraction toolkit'
   s.homepage               = 'https://github.com/avito-tech/ImageSource'
   s.license                = 'MIT'
   s.author                 = { 'Andrey Yutkin' => 'ayutkin@avito.ru' }
   s.source                 = { :git => 'https://github.com/avito-tech/ImageSource.git', :tag => "#{s.version}" }
-  s.platform               = :ios, '9.0'
-  s.ios.deployment_target  = '9.0'
+  s.platform               = :ios, '10.0'
+  s.ios.deployment_target  = '10.0'
   s.swift_version          = '5.0'
   s.requires_arc           = true
   s.default_subspec        = 'Core', 'PHAsset', 'Local', 'Remote', 'AlamofireImage'
@@ -45,7 +45,7 @@ Pod::Spec.new do |s|
 
   s.subspec 'AlamofireImage' do |ai|
     ai.dependency 'ImageSource/Remote'
-    ai.dependency 'AlamofireImage', '~> 3.4'
+    ai.dependency 'AlamofireImage', '~> 4.2'
     ai.source_files = 'ImageSource/AlamofireImage/*'
   end
   

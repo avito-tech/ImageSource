@@ -1,25 +1,25 @@
 PODS:
-  - Alamofire (4.8.2)
-  - AlamofireImage (3.5.2):
-    - Alamofire (~> 4.8)
-  - ImageSource (3.0.1):
-    - ImageSource/AlamofireImage (= 3.0.1)
-    - ImageSource/Core (= 3.0.1)
-    - ImageSource/Local (= 3.0.1)
-    - ImageSource/PHAsset (= 3.0.1)
-    - ImageSource/Remote (= 3.0.1)
-  - ImageSource/AlamofireImage (3.0.1):
-    - AlamofireImage (~> 3.4)
+  - Alamofire (5.4.3)
+  - AlamofireImage (4.2.0):
+    - Alamofire (~> 5.4)
+  - ImageSource (3.1.0):
+    - ImageSource/AlamofireImage (= 3.1.0)
+    - ImageSource/Core (= 3.1.0)
+    - ImageSource/Local (= 3.1.0)
+    - ImageSource/PHAsset (= 3.1.0)
+    - ImageSource/Remote (= 3.1.0)
+  - ImageSource/AlamofireImage (3.1.0):
+    - AlamofireImage (~> 4.2)
     - ImageSource/Remote
-  - ImageSource/Core (3.0.1)
-  - ImageSource/Local (3.0.1):
+  - ImageSource/Core (3.1.0)
+  - ImageSource/Local (3.1.0):
     - ImageSource/Core
-  - ImageSource/PHAsset (3.0.1):
+  - ImageSource/PHAsset (3.1.0):
     - ImageSource/Core
-  - ImageSource/Remote (3.0.1):
+  - ImageSource/Remote (3.1.0):
     - ImageSource/Core
     - ImageSource/UIKit
-  - ImageSource/UIKit (3.0.1):
+  - ImageSource/UIKit (3.1.0):
     - ImageSource/Core
 
 DEPENDENCIES:
@@ -35,10 +35,10 @@ EXTERNAL SOURCES:
     :path: "../"
 
 SPEC CHECKSUMS:
-  Alamofire: ae5c501addb7afdbb13687d7f2f722c78734c2d3
-  AlamofireImage: 63cfe3baf1370be6c498149687cf6db3e3b00999
-  ImageSource: 4f05ebf3fd85c6875a7a03351954eee70426dcd7
+  Alamofire: 3a0206e1b1c77c61a9405769c6af66d4cfc2f74b
+  AlamofireImage: ac957ede93f933e36455971d51f6b4c09df4086a
+  ImageSource: 96a0d9f817a225e36bb7c8f655482bf2ca10575c
 
-PODFILE CHECKSUM: e6096bdcf2520ae5908bfc725a72bd76f971a1c6
+PODFILE CHECKSUM: a83b8e58dd5bc1ee7ea1ad46cb23f0c6fcf5ec77
 
-COCOAPODS: 1.9.0.beta.2
+COCOAPODS: 1.10.0
