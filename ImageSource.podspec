@@ -37,12 +37,6 @@ Pod::Spec.new do |s|
     rs.source_files = 'ImageSource/Remote/*'
   end
 
-  s.subspec 'SDWebImage' do |sw|
-    sw.dependency 'ImageSource/Remote'
-    sw.dependency 'SDWebImage', '~> 3.8'
-    sw.source_files = 'ImageSource/SDWebImage/*'
-  end
-
   s.subspec 'AlamofireImage' do |ai|
     ai.dependency 'ImageSource/Remote'
     ai.dependency 'AlamofireImage', '~> 4.2'
