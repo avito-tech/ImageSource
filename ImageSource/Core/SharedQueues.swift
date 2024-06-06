@@ -1,3 +1,5 @@
+import Foundation
+
 struct SharedQueues {
     
     static let imageProcessingQueue: OperationQueue = {

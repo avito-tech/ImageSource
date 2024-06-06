@@ -1,3 +1,5 @@
+import Foundation
+
 import CoreGraphics
 
 public protocol ImageSource: AnyObject {

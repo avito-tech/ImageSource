@@ -1,3 +1,6 @@
+import Foundation
+import CoreGraphics
+
 final class RemoteImageRequestOperation<T: InitializableWithCGImage>: Operation, ImageRequestIdentifiable {
     
     let id: ImageRequestId

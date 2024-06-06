@@ -1,3 +1,5 @@
+import Foundation
+
 public struct ImageMetadata {
     
     public let metadata: [String: Any]

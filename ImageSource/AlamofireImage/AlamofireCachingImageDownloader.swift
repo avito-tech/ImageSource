@@ -1,5 +1,7 @@
 import AlamofireImage
 import Alamofire
+import Foundation
+import UIKit
 
 extension AlamofireImage.ImageDownloader: CachingImageDownloader {
     

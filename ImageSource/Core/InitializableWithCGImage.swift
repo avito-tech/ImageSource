@@ -1,3 +1,5 @@
+import CoreGraphics
+
 public protocol InitializableWithCGImage {
     // Если хотим совсем ни к чему не привязываться (отвязаться от Core Graphics),
     // нужно создать свою структуру, представляющую bitmap, а потом реализовать

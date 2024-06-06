@@ -1,3 +1,5 @@
+import UIKit
+
 public extension UIImage.Orientation {
     var exifOrientation: ExifOrientation {
         switch self {
