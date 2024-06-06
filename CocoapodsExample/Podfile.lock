@@ -1,32 +1,32 @@
 PODS:
-  - Alamofire (5.4.3)
-  - AlamofireImage (4.2.0):
-    - Alamofire (~> 5.4)
-  - ImageSource (3.1.0):
-    - ImageSource/AlamofireImage (= 3.1.0)
-    - ImageSource/Core (= 3.1.0)
-    - ImageSource/Local (= 3.1.0)
-    - ImageSource/PHAsset (= 3.1.0)
-    - ImageSource/Remote (= 3.1.0)
-  - ImageSource/AlamofireImage (3.1.0):
+  - Alamofire (5.9.1)
+  - AlamofireImage (4.3.0):
+    - Alamofire (~> 5.8)
+  - ImageSource (4.0.0):
+    - ImageSource/AlamofireImage (= 4.0.0)
+    - ImageSource/Core (= 4.0.0)
+    - ImageSource/Local (= 4.0.0)
+    - ImageSource/PHAsset (= 4.0.0)
+    - ImageSource/Remote (= 4.0.0)
+  - ImageSource/AlamofireImage (4.0.0):
     - AlamofireImage (~> 4.2)
     - ImageSource/Remote
-  - ImageSource/Core (3.1.0)
-  - ImageSource/Local (3.1.0):
+  - ImageSource/Core (4.0.0)
+  - ImageSource/Local (4.0.0):
     - ImageSource/Core
-  - ImageSource/PHAsset (3.1.0):
+  - ImageSource/PHAsset (4.0.0):
     - ImageSource/Core
-  - ImageSource/Remote (3.1.0):
+  - ImageSource/Remote (4.0.0):
     - ImageSource/Core
     - ImageSource/UIKit
-  - ImageSource/UIKit (3.1.0):
+  - ImageSource/UIKit (4.0.0):
     - ImageSource/Core
 
 DEPENDENCIES:
   - ImageSource (from `../`)
 
 SPEC REPOS:
-  https://github.com/CocoaPods/Specs.git:
+  trunk:
     - Alamofire
     - AlamofireImage
 
@@ -35,10 +35,10 @@ EXTERNAL SOURCES:
     :path: "../"
 
 SPEC CHECKSUMS:
-  Alamofire: 3a0206e1b1c77c61a9405769c6af66d4cfc2f74b
-  AlamofireImage: ac957ede93f933e36455971d51f6b4c09df4086a
-  ImageSource: 96a0d9f817a225e36bb7c8f655482bf2ca10575c
+  Alamofire: f36a35757af4587d8e4f4bfa223ad10be2422b8c
+  AlamofireImage: 843953fa97bee5f561cf05d83abd759e590b068d
+  ImageSource: 4df771402da92e260c89535e41a4d85b51e05a3f
 
-PODFILE CHECKSUM: a83b8e58dd5bc1ee7ea1ad46cb23f0c6fcf5ec77
+PODFILE CHECKSUM: ab21444bfbe11aa0c569e5dc436b138fbdee8efc
 
-COCOAPODS: 1.10.0
+COCOAPODS: 1.15.2
