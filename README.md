@@ -10,14 +10,15 @@ It is also designed to be platform-independent, so you can use it both on iOS an
 
 * [Installation](#installation)
   * [CocoaPods](#installation-cocoapods)
+  * [Swift Package Manager](#installation-spm)
 * [Typical use cases](#use-cases)
   * [Displaying in UI](#displaying-in-ui)
   * [Getting image data](#getting-image-data)
   * [Getting image size](#getting-image-size)
 * [Implementing custom ImageSource](#custom-imagesource)
 
-## <a name="installation" /> Installation
-### <a name="installation-cocoapods" /> CocoaPods
+## <a name="installation" />Installation
+### <a name="installation-cocoapods" />CocoaPods
 
 To integrate ImageSource into your Xcode project using CocoaPods, specify it in your `Podfile`:
 
@@ -33,6 +34,17 @@ Then, run the following command:
 
 ```bash
 $ pod install
+```
+
+### <a name="installation-spm" />Swift Package Manager
+```swift
+let package = Package(
+    // 4.0.0 
+    dependencies: [
+        .package(url: "https://github.com/avito-tech/ImageSource.git", from: "4.0.0")
+    ],
+    // ...
+)
 ```
 
 ## <a name="use-cases" />Typical use cases

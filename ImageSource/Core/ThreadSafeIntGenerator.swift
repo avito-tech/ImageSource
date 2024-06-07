@@ -1,3 +1,5 @@
+import Foundation
+
 /// Generates non-repetitive integers in a thread-safe manner
 class ThreadSafeIntGenerator {
     

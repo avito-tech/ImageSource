@@ -1,3 +1,5 @@
+import CoreGraphics
+
 public enum ImageSizeOption: Equatable {
     
     case fitSize(CGSize)
