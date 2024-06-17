@@ -4,16 +4,16 @@
 import PackageDescription
 
 let package = Package(
-    name: "image-source",
+    name: "ImageSource",
     platforms: [
         .iOS(.v12)
     ],
     products: [
         // Products define the executables and libraries a package produces, making them visible to other packages.
         .library(
-            name: "image-source",
+            name: "ImageSource",
             targets: [
-                "image-source"
+                "ImageSource"
             ]
         ),
     ],
@@ -22,7 +22,7 @@ let package = Package(
     ],
     targets: [
         .target(
-            name: "image-source",
+            name: "ImageSource",
             dependencies: ["AlamofireImage"],
             path: "ImageSource"
         )
