@@ -18,7 +18,7 @@ let package = Package(
         ),
     ],
     dependencies: [
-        .package(url: "https://github.com/Alamofire/AlamofireImage.git", exact: "4.2.0")
+        .package(url: "https://github.com/Alamofire/AlamofireImage.git", from: "4.3.0")
     ],
     targets: [
         .target(
