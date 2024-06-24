@@ -1,7 +1,7 @@
 Pod::Spec.new do |s|
   s.name                   = 'ImageSource'
   s.module_name            = 'ImageSource'
-  s.version                = '4.0.0'
+  s.version                = '4.1.2'
   s.summary                = 'Image abstraction toolkit'
   s.homepage               = 'https://github.com/avito-tech/ImageSource'
   s.license                = 'MIT'
@@ -39,7 +39,7 @@ Pod::Spec.new do |s|
 
   s.subspec 'AlamofireImage' do |ai|
     ai.dependency 'ImageSource/Remote'
-    ai.dependency 'AlamofireImage', '~> 4.2'
+    ai.dependency 'AlamofireImage', '~> 4.3'
     ai.source_files = 'ImageSource/AlamofireImage/*'
   end
   
