@@ -147,7 +147,7 @@ public final class PHAssetImageSource: ImageSource {
     private func imageRequestParameters(from options: ImageRequestOptions)
         -> (options: PHImageRequestOptions, size: CGSize, contentMode: PHImageContentMode)
     {
-        let phOptions = PHImageRequestOptions()
+        let phOptions: PHImageRequestOptions = PHImageRequestOptions()
         phOptions.isNetworkAccessAllowed = true
         
         switch options.deliveryMode {
@@ -157,6 +157,15 @@ public final class PHAssetImageSource: ImageSource {
         case .best:
             phOptions.deliveryMode = .highQualityFormat
             phOptions.resizeMode = .exact
+        }
+
+        switch options.version {
+        case .current:
+            phOptions.version = .current
+        case .original:
+            phOptions.version = .original
+        case .unadjusted:
+            phOptions.version = .unadjusted
         }
         
         let size: CGSize
