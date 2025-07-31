@@ -37,7 +37,6 @@ public extension UIImageView {
         if !placeholderDeferred {
             image = placeholder
         }
-        
         imageSource = newImageSource
         
         if let newImageSource = newImageSource, pixelSize.width > 0 && pixelSize.height > 0 {
@@ -47,9 +46,11 @@ public extension UIImageView {
             adjustOptions?(&options)
             
             imageRequestId = newImageSource.requestImage(options: options) { [weak self] (result: ImageRequestResult<UIImage>) in
-                let shouldSetImage = self?.shouldSetImageForImageSource(newImageSource, requestId: result.requestId) == true
+                let shouldSetImage = ImageSourceFeatureToggle.shared.isNewImageSettingEnabled
+                    ? self?.shouldSetImageForImageSource(requestId: result.requestId) == true
+                    : self?.legacyShouldSetImageForImageSource(newImageSource, requestId: result.requestId) == true
                 
-                if let image = result.image, shouldSetImage {
+                if let image = result.image/*, shouldSetImage*/ {
                     self?.image = image
                     resultHandler?(result)
                 }
@@ -75,7 +76,6 @@ public extension UIImageView {
             objc_setAssociatedObject(self, &UIImageView.imageSourceKey, newValue, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
         }
     }
-    
     private var imageRequestId: ImageRequestId? {
         get {
             let intAsNSNumber = objc_getAssociatedObject(self, &UIImageView.imageRequestIdKey) as? NSNumber
@@ -87,7 +87,8 @@ public extension UIImageView {
         }
     }
     
-    private func shouldSetImageForImageSource(_ imageSource: ImageSource, requestId: ImageRequestId) -> Bool {
+    @available(*, deprecated, message: "Use `shouldSetImageForImageSource` instead")
+    private func legacyShouldSetImageForImageSource(_ imageSource: ImageSource, requestId: ImageRequestId) -> Bool {
         if let currentImageSource = self.imageSource {
             // Если imageRequestId == nil, это значит, что resultHandler вызвался синхронно — еще до того,
             // как метод requestImage завершился и вернул нам ImageRequestId. В этом случае картику поставить нужно.
@@ -95,5 +96,11 @@ public extension UIImageView {
         } else {
             return false
         }
+    }
+    
+    private func shouldSetImageForImageSource(requestId: ImageRequestId) -> Bool {
+        // Если imageRequestId == nil, это значит, что resultHandler вызвался синхронно — еще до того,
+        // как метод requestImage завершился и вернул нам ImageRequestId. В этом случае картику поставить нужно.
+        imageRequestId == nil || requestId == imageRequestId
     }
 }
