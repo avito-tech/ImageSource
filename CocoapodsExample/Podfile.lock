@@ -37,7 +37,7 @@ EXTERNAL SOURCES:
 SPEC CHECKSUMS:
   Alamofire: f36a35757af4587d8e4f4bfa223ad10be2422b8c
   AlamofireImage: 843953fa97bee5f561cf05d83abd759e590b068d
-  ImageSource: 6b96028daa3a04e4ba7945a393a5aaca12517229
+  ImageSource: ba86fd45f4ccf0e69ea7669abe14af2e5c16d789
 
 PODFILE CHECKSUM: ab21444bfbe11aa0c569e5dc436b138fbdee8efc
 
